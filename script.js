@@ -1,11 +1,23 @@
-//your JS code here. If required.
-() => {
-  cy.visit(baseUrl + "/main.html");
-  cy.get(".code-container").find("input.code").eq(0).type(5);
-  cy.wait(100); // wait for 100ms for the focus to move to the next input field
-  cy.focused().should("have.id", "code-2");
-  cy.get(".code").eq(1).type(1);
-  cy.wait(100); // wait for 100ms for the focus to move to the next input field
-  cy.focused().should("have.id", "code-3");
-  // ...
-}
+const codes = document.querySelectorAll('.code');
+
+codes[0].focus();
+
+codes.forEach((code, index) => {
+    code.addEventListener('input', () => {
+        if (code.value.length === 1) {
+            if (index < 5) {
+                codes[index + 1].focus();
+            }
+        }
+    });
+
+    code.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace') {
+            if (code.value.length === 0) {
+                if (index > 0) {
+                    codes[index - 1].focus();
+                }
+            }
+        }
+    });
+});

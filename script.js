@@ -1,15 +1,11 @@
 //your JS code here. If required.
-const codes = document.querySelectorAll('.code');
-
-codes.forEach((code, index) => {
-    code.addEventListener('keyup', (e) => {
-        if (e.target.value.length === 1) {
-            if (index < codes.length - 1) {
-                codes[index + 1].focus();
-            }
-        } else if (e.key === 'Backspace' && index > 0) {
-            codes[index - 1].focus();
-            codes[index - 1].select();
-        }
-    });
-});
+() => {
+  cy.visit(baseUrl + "/main.html");
+  cy.get(".code-container").find("input.code").eq(0).type(5);
+  cy.wait(100); // wait for 100ms for the focus to move to the next input field
+  cy.focused().should("have.id", "code-2");
+  cy.get(".code").eq(1).type(1);
+  cy.wait(100); // wait for 100ms for the focus to move to the next input field
+  cy.focused().should("have.id", "code-3");
+  // ...
+}
